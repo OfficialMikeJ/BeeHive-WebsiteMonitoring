@@ -201,6 +201,13 @@ async def check_and_notify(website: Dict[str, Any], monitoring_data: Dict[str, A
         logger.debug("No Discord webhook configured, skipping notifications")
         return
     
+    # Get custom alert thresholds for this website
+    threshold = await db.alert_thresholds.find_one({
+        "website_id": website_id,
+        "user_id": owner["id"],
+        "enabled": True
+    }, {"_id": 0})
+    
     # Check for downtime
     if not monitoring_data["is_online"]:
         title = f"🚨 Website Down: {website_name}"
@@ -214,19 +221,37 @@ Please check your website immediately.
 """
         await send_discord_notification(discord_webhook, title, description, color=0xFF0000)
     
+    # Check custom latency threshold
+    if threshold and threshold.get("max_latency"):
+        current_latency = monitoring_data.get("latency", 0)
+        if current_latency > threshold["max_latency"]:
+            title = f"⚠️ High Latency Alert: {website_name}"
+            description = f"""
+**URL:** {website_url}
+**Current Latency:** {current_latency:.0f}ms
+**Threshold:** {threshold['max_latency']}ms
+**Exceeded By:** {current_latency - threshold['max_latency']:.0f}ms
+
+Your website is responding slower than expected.
+"""
+            await send_discord_notification(discord_webhook, title, description, color=0xFFA500)
+    
     # Check for SSL expiration
     ssl_info = monitoring_data.get("ssl_info")
+    ssl_warning_days = threshold.get("ssl_days_warning", 30) if threshold else 30
+    
     if ssl_info and ssl_info.get("expires_soon"):
         days_left = ssl_info.get("days_until_expiry", 0)
-        title = f"⚠️ SSL Certificate Expiring Soon: {website_name}"
-        description = f"""
+        if days_left <= ssl_warning_days:
+            title = f"⚠️ SSL Certificate Expiring Soon: {website_name}"
+            description = f"""
 **URL:** {website_url}
 **Days Until Expiry:** {days_left} days
 **Expiry Date:** {ssl_info.get('expiry_date', 'Unknown')}
 
 Please renew your SSL certificate to avoid service disruption.
 """
-        await send_discord_notification(discord_webhook, title, description, color=0xFFA500)
+            await send_discord_notification(discord_webhook, title, description, color=0xFFA500)
 
 
 async def scheduled_monitoring_task():

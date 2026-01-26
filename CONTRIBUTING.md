@@ -246,7 +246,7 @@ We welcome contributions in the following areas:
 
 ### Bug Fixes
 
-Check the [Issues](https://github.com/original-owner/beehive-manager/issues) page for known bugs.
+Check the [Issues](https://github.com/OfficialMikeJ/beehive-manager/issues) page for known bugs.
 
 ---
 

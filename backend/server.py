@@ -119,7 +119,17 @@ class WeeklyStats(BaseModel):
     uptime_percentage: float
     improvement: str
 
-# Add after WeeklyStats
+class MonitoringSettings(BaseModel):
+    check_ssl: bool = True
+    multi_location: bool = False
+    notifications_enabled: bool = True
+    monitoring_interval_minutes: int = 5
+    email_notifications: bool = True
+    slack_notifications: bool = False
+
+class NotificationSettings(BaseModel):
+    email: Optional[str] = None
+    slack_webhook: Optional[str] = None
 
 # Helper Functions
 def hash_password(password: str) -> str:

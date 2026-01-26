@@ -132,6 +132,10 @@ BeeHive is fully responsive! Access from any device:
 
 ## 🆘 Need Help?
 
+- **Discord Support**: Join our Discord server and open a ticket in **#forms** channel
+  
+  [![Join Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://discord.gg/ykkkjwDnAD)
+
 - **Full Documentation**: See [README.md](README.md)
 - **Installation Guide**: See [INSTALLATION.md](INSTALLATION.md)
 - **Contributing**: See [CONTRIBUTING.md](CONTRIBUTING.md)

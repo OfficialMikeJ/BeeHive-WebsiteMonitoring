@@ -29,13 +29,11 @@ const SettingsPage = ({ user }) => {
     multi_location: false,
     notifications_enabled: true,
     monitoring_interval_minutes: 5,
-    email_notifications: true,
-    slack_notifications: false,
+    discord_notifications: true,
   });
   
   const [notificationSettings, setNotificationSettings] = useState({
-    email: '',
-    slack_webhook: '',
+    discord_webhook: '',
   });
 
   useEffect(() => {

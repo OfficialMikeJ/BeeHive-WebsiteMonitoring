@@ -648,16 +648,56 @@ For issues, questions, or contributions:
 
 ---
 
-## 🚀 Roadmap
+## 🚀 Roadmap - Completed Features
 
 - ✅ Automated scheduled monitoring
 - ✅ Discord Webhooks for notifications
 - ✅ SSL certificate expiration tracking
 - ✅ Multi-location monitoring
-- [ ] Custom alert thresholds
-- [ ] Export reports (PDF/CSV)
-- [ ] API rate limiting
-- [ ] Additional webhook integrations (Slack, Microsoft Teams)
+- ✅ Custom alert thresholds
+- ✅ Export reports (PDF/CSV in ZIP format)
+- ✅ API rate limiting
+
+---
+
+## 🗺️ Roadmap 2026-2027 - Future Features
+
+> **Note:** These features are currently in private/closed internal testing. They will be released throughout 2026-2027 after thorough testing to ensure minimal bugs and issues.
+
+### Support Ticket System
+
+**Basic Support System (Q1 2026)**
+- ✨ Clients can open support tickets (authentication required to prevent spam)
+- 🎨 Color-coded ticket priority system:
+  - 🟢 Green: Low Priority
+  - 🟠 Orange: Medium Priority
+  - 🟣 Purple: High Priority
+  - 🔴 Red: Very High Priority
+- ⭐ 4-star rating system for support quality
+- 📊 Admin dashboard with satisfaction metrics and analytics
+- 💬 Ticket reply functionality for both clients and admins
+- 🔄 Automatic ticket reopening when clients reply to closed tickets
+
+**Enhanced Ticket Management (Q2 2026)**
+- 👤 Display admin names for ticket replies
+- 🏢 Customizable business/organization names for admins
+- 🔧 Admin username configuration for ticket responses
+- 🔒 Admins can close tickets at any time
+- 🎫 Smart ticket numbering: `#ticket-01-{username/firstname}`
+
+**Advanced Security Features (Q3 2026)**
+- 🛡️ Google reCAPTCHA integration (admin-configurable per instance)
+- 🚫 Advanced spam protection
+- ✅ Account verification requirements
+- 📧 Email verification for ticket creation
+
+**Additional Planned Features**
+- 📎 File attachments for tickets
+- 🔔 Real-time notifications for ticket updates
+- 📈 Ticket analytics and reporting
+- 🤖 Automated responses and ticket categorization
+- 🌐 Multi-language support
+- 📱 Mobile-optimized ticket interface
 
 ---
 

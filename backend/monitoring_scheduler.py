@@ -154,46 +154,29 @@ async def monitor_website_complete(website_id: str, url: str, check_ssl: bool = 
     return monitoring_record
 
 
-async def send_email_notification(to_email: str, subject: str, body: str):
-    """Send email notification"""
-    smtp_host = os.environ.get('SMTP_HOST')
-    smtp_port = int(os.environ.get('SMTP_PORT', '587'))
-    smtp_user = os.environ.get('SMTP_USER')
-    smtp_password = os.environ.get('SMTP_PASSWORD')
-    from_email = os.environ.get('SMTP_FROM_EMAIL', smtp_user)
-    
-    if not all([smtp_host, smtp_user, smtp_password]):
-        logger.warning("SMTP settings not configured, skipping email notification")
-        return
-    
+async def send_discord_notification(webhook_url: str, title: str, description: str, color: int = 0xFFD700):
+    """Send Discord notification via webhook"""
     try:
-        message = MIMEMultipart()
-        message['From'] = from_email
-        message['To'] = to_email
-        message['Subject'] = subject
-        message.attach(MIMEText(body, 'html'))
+        embed = {
+            "embeds": [{
+                "title": title,
+                "description": description,
+                "color": color,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "footer": {
+                    "text": "BeeHive - Website Manager"
+                }
+            }]
+        }
         
-        await aiosmtplib.send(
-            message,
-            hostname=smtp_host,
-            port=smtp_port,
-            username=smtp_user,
-            password=smtp_password,
-            start_tls=True
-        )
-        logger.info(f"Email notification sent to {to_email}")
-    except Exception as e:
-        logger.error(f"Failed to send email notification: {str(e)}")
-
-
-async def send_slack_notification(webhook_url: str, message: str):
-    """Send Slack notification"""
-    try:
         async with httpx.AsyncClient() as client:
-            await client.post(webhook_url, json={"text": message})
-        logger.info("Slack notification sent")
+            response = await client.post(webhook_url, json=embed, timeout=10.0)
+            if response.status_code == 204:
+                logger.info("Discord notification sent successfully")
+            else:
+                logger.warning(f"Discord notification returned status {response.status_code}")
     except Exception as e:
-        logger.error(f"Failed to send Slack notification: {str(e)}")
+        logger.error(f"Failed to send Discord notification: {str(e)}")
 
 
 async def check_and_notify(website: Dict[str, Any], monitoring_data: Dict[str, Any]):

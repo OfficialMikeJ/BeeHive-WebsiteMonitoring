@@ -89,6 +89,22 @@ const Login = ({ onLogin }) => {
                     required
                   />
                 </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    data-testid="remember-me-checkbox"
+                    id="remember_me"
+                    checked={formData.remember_me}
+                    onCheckedChange={(checked) =>
+                      setFormData({ ...formData, remember_me: checked })
+                    }
+                  />
+                  <label
+                    htmlFor="remember_me"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Remember me for 60 days
+                  </label>
+                </div>
               </>
             ) : (
               <div className="space-y-2">

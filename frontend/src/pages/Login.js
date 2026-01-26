@@ -31,6 +31,7 @@ const Login = ({ onLogin }) => {
         username: formData.username,
         password: formData.password,
         totp_code: formData.totp_code || null,
+        remember_me: formData.remember_me,
       });
 
       if (response.data.requires_2fa) {

@@ -531,42 +531,25 @@ const SettingsPage = ({ user }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
-            Notification Settings
+            Discord Notification Settings
           </CardTitle>
-          <CardDescription>Configure where to receive alerts</CardDescription>
+          <CardDescription>Configure Discord webhooks for instant alerts</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="notification_email">Email Address</Label>
+            <Label htmlFor="discord_webhook">Discord Webhook URL</Label>
             <Input
-              data-testid="notification-email-input"
-              id="notification_email"
-              type="email"
-              placeholder="your@email.com"
-              value={notificationSettings.email}
-              onChange={(e) =>
-                setNotificationSettings({ ...notificationSettings, email: e.target.value })
-              }
-            />
-            <p className="text-xs text-muted-foreground">
-              Receive downtime and SSL expiration alerts via email
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="slack_webhook">Slack Webhook URL</Label>
-            <Input
-              data-testid="slack-webhook-input"
-              id="slack_webhook"
+              data-testid="discord-webhook-input"
+              id="discord_webhook"
               type="url"
-              placeholder="https://hooks.slack.com/services/..."
-              value={notificationSettings.slack_webhook}
+              placeholder="https://discord.com/api/webhooks/..."
+              value={notificationSettings.discord_webhook}
               onChange={(e) =>
-                setNotificationSettings({ ...notificationSettings, slack_webhook: e.target.value })
+                setNotificationSettings({ ...notificationSettings, discord_webhook: e.target.value })
               }
             />
             <p className="text-xs text-muted-foreground">
-              Receive instant Slack notifications for downtime
+              Receive instant Discord notifications for downtime and SSL expiration
             </p>
           </div>
 
@@ -583,17 +566,49 @@ const SettingsPage = ({ user }) => {
 
       <Card>
         <CardHeader>
-          <CardTitle>SMTP Configuration (Admin)</CardTitle>
-          <CardDescription>Configure email server settings in .env file</CardDescription>
+          <CardTitle>How to Set Up Discord Webhooks</CardTitle>
+          <CardDescription>Follow these steps to create a Discord webhook</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2 text-sm bg-muted p-4 rounded-lg">
-            <p className="font-medium mb-2">Add these to your backend .env file:</p>
-            <code className="block">SMTP_HOST=smtp.gmail.com</code>
-            <code className="block">SMTP_PORT=587</code>
-            <code className="block">SMTP_USER=your-email@gmail.com</code>
-            <code className="block">SMTP_PASSWORD=your-app-password</code>
-            <code className="block">SMTP_FROM_EMAIL=your-email@gmail.com</code>
+          <div className="space-y-3 text-sm">
+            <div className="flex items-start gap-3">
+              <div className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 font-semibold">
+                1
+              </div>
+              <p>Go to your Discord server settings</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 font-semibold">
+                2
+              </div>
+              <p>Navigate to <strong>Integrations</strong> → <strong>Webhooks</strong></p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 font-semibold">
+                3
+              </div>
+              <p>Click <strong>New Webhook</strong> or <strong>Create Webhook</strong></p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 font-semibold">
+                4
+              </div>
+              <p>Choose the channel where you want to receive notifications</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 font-semibold">
+                5
+              </div>
+              <p>Copy the <strong>Webhook URL</strong> and paste it above</p>
+            </div>
+          </div>
+          
+          <div className="mt-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
+            <p className="text-sm font-medium text-primary mb-1">💡 Pro Tip</p>
+            <p className="text-sm text-muted-foreground">
+              You can create separate webhooks for different channels to organize your notifications.
+              For example, one for downtime alerts and another for SSL warnings.
+            </p>
           </div>
         </CardContent>
       </Card>

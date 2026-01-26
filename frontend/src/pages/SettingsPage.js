@@ -434,32 +434,16 @@ const SettingsPage = ({ user }) => {
 
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label>Email Notifications</Label>
+                  <Label>Discord Notifications</Label>
                   <p className="text-sm text-muted-foreground">
-                    Send email alerts for downtime and SSL expiration
+                    Send Discord alerts for downtime and SSL expiration
                   </p>
                 </div>
                 <Switch
-                  data-testid="email-notifications-switch"
-                  checked={monitoringSettings.email_notifications}
+                  data-testid="discord-notifications-switch"
+                  checked={monitoringSettings.discord_notifications}
                   onCheckedChange={(checked) =>
-                    setMonitoringSettings({ ...monitoringSettings, email_notifications: checked })
-                  }
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Slack Notifications</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Send Slack alerts for downtime
-                  </p>
-                </div>
-                <Switch
-                  data-testid="slack-notifications-switch"
-                  checked={monitoringSettings.slack_notifications}
-                  onCheckedChange={(checked) =>
-                    setMonitoringSettings({ ...monitoringSettings, slack_notifications: checked })
+                    setMonitoringSettings({ ...monitoringSettings, discord_notifications: checked })
                   }
                 />
               </div>

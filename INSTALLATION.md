@@ -40,8 +40,33 @@ For a quick start, you can use the default settings. For production, copy and mo
 cp .env.example .env
 ```
 
+**⚠️ CRITICAL: Generate a Secure JWT Secret**
+
+**DO NOT use the default JWT secret in production!**
+
+Generate a secure JWT token:
+
+```bash
+# Using OpenSSL (Recommended)
+openssl rand -base64 32
+
+# Using Python
+python3 -c "import secrets; print(secrets.token_urlsafe(32))"
+
+# Using Node.js
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+**🚨 SECURITY WARNING 🚨**
+
+**DO NOT SHARE YOUR JWT TOKEN WITH ANYONE. PERIOD.**
+
+- Never commit JWT secrets to Git
+- Never share in screenshots or logs
+- Exposing your JWT token allows unauthorized access to your entire monitoring system
+
 Edit `.env` and update:
-- `JWT_SECRET` - Change to a random secure string
+- `JWT_SECRET` - **REPLACE with your generated secure token**
 - `REACT_APP_BACKEND_URL` - Update if deploying to a custom domain
 
 ### 3. Start BeeHive with Docker Compose

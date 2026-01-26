@@ -218,7 +218,7 @@ const SettingsPage = ({ user }) => {
                     Scan this QR code with your authenticator app
                   </p>
                   <div className="flex justify-center mb-3">
-                    <QRCode value={twoFASetup.uri} size={200} />
+                    <QRCodeCanvas value={twoFASetup.uri} size={200} />
                   </div>
                   <p className="text-xs text-muted-foreground mb-2">Or enter this secret manually:</p>
                   <code className="text-xs bg-muted px-2 py-1 rounded">{twoFASetup.secret}</code>

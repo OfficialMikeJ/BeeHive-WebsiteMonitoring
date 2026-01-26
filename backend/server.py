@@ -541,8 +541,7 @@ async def get_monitoring_settings(current_user: dict = Depends(get_current_user)
             "multi_location": False,
             "notifications_enabled": True,
             "monitoring_interval_minutes": 5,
-            "email_notifications": True,
-            "slack_notifications": False
+            "discord_notifications": True
         }
     return settings
 

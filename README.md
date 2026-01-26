@@ -616,10 +616,10 @@ For issues, questions, or contributions:
 
 ## 🚀 Roadmap
 
-- [ ] Automated scheduled monitoring
-- [ ] Email/Slack notifications
-- [ ] SSL certificate expiration tracking
-- [ ] Multi-location monitoring
+- [x] Automated scheduled monitoring
+- [x] Email/Slack notifications
+- [x] SSL certificate expiration tracking
+- [x] Multi-location monitoring
 - [ ] Custom alert thresholds
 - [ ] Export reports (PDF/CSV)
 - [ ] API rate limiting

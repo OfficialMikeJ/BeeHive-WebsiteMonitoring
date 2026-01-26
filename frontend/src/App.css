@@ -1,34 +1,75 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.App {
+  min-height: 100vh;
 }
 
 .App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
 }
 
 .App-link {
-    color: #61dafb;
+  color: hsl(var(--primary));
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Bee-themed hexagon background pattern */
+.hexagon-bg {
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255, 208, 0, 0.03) 50px, rgba(255, 208, 0, 0.03) 52px),
+    repeating-linear-gradient(60deg, transparent, transparent 50px, rgba(255, 208, 0, 0.03) 50px, rgba(255, 208, 0, 0.03) 52px),
+    repeating-linear-gradient(120deg, transparent, transparent 50px, rgba(255, 208, 0, 0.03) 50px, rgba(255, 208, 0, 0.03) 52px);
+}
+
+/* Card hover effects */
+.website-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.website-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 208, 0, 0.1);
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Status indicators */
+.status-online {
+  background: #10b981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.status-offline {
+  background: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+.status-unknown {
+  background: #6b7280;
+  box-shadow: 0 0 10px rgba(107, 114, 128, 0.5);
 }

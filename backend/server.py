@@ -112,9 +112,14 @@ class MonitoringSettings(BaseModel):
     email_notifications: bool = True
     slack_notifications: bool = False
 
-class NotificationSettings(BaseModel):
-    email: Optional[str] = None
-    slack_webhook: Optional[str] = None
+class WeeklyStats(BaseModel):
+    message: str
+    total_checks: int
+    avg_latency: float
+    uptime_percentage: float
+    improvement: str
+
+# Add after WeeklyStats
 
 # Helper Functions
 def hash_password(password: str) -> str:

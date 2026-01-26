@@ -345,6 +345,61 @@ Once the backend is running, access the interactive API docs:
 
 ---
 
+---
+
+## 🔐 Security Best Practices
+
+### JWT Secret Token
+
+**⚠️ CRITICAL SECURITY REQUIREMENT**
+
+Your JWT secret is the master key to your BeeHive installation. Follow these guidelines:
+
+#### Generate a Secure JWT Token
+
+```bash
+# Method 1: OpenSSL (Recommended)
+openssl rand -base64 32
+
+# Method 2: Python
+python3 -c "import secrets; print(secrets.token_urlsafe(32))"
+
+# Method 3: Node.js
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+#### 🚨 SECURITY WARNING 🚨
+
+**DO NOT SHARE YOUR JWT TOKEN WITH ANYONE. PERIOD.**
+
+Exposing your JWT token will:
+- ❌ Allow unauthorized access to your monitoring system
+- ❌ Enable attackers to forge authentication tokens
+- ❌ Compromise all user accounts and data
+- ❌ Grant complete control over your BeeHive installation
+
+#### JWT Token Security Checklist
+
+- [ ] Generated a cryptographically secure random token
+- [ ] Replaced default JWT_SECRET in `.env` file
+- [ ] Never committed JWT secret to version control
+- [ ] Never shared in screenshots, logs, or documentation
+- [ ] Stored securely (password manager, secrets vault)
+- [ ] Rotated token if potentially exposed
+
+### Additional Security Measures
+
+1. **Enable 2FA** for all accounts (especially admin)
+2. **Use strong passwords** - minimum 12 characters with mixed case, numbers, symbols
+3. **Regular updates** - Keep Docker images and dependencies updated
+4. **HTTPS/SSL** - Always use encrypted connections in production
+5. **Firewall rules** - Restrict access to MongoDB and backend ports
+6. **Database authentication** - Enable MongoDB authentication in production
+7. **Regular backups** - Schedule automated database backups
+8. **Monitor logs** - Watch for suspicious login attempts
+
+---
+
 ## 🔒 Security Features
 
 ### Password Security

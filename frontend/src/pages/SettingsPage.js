@@ -387,6 +387,236 @@ const SettingsPage = ({ user }) => {
           </div>
         </CardContent>
       </Card>
+    </TabsContent>
+
+    {/* Monitoring Settings Tab */}
+    <TabsContent value="monitoring" className="space-y-6 mt-6">
+      {user?.role === 'admin' ? (
+        <>
+          <Card data-testid="monitoring-settings-card">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="h-5 w-5" />
+                Monitoring Configuration
+              </CardTitle>
+              <CardDescription>Configure automated website monitoring</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>SSL Certificate Checking</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Monitor SSL certificate expiration dates
+                  </p>
+                </div>
+                <Switch
+                  data-testid="ssl-check-switch"
+                  checked={monitoringSettings.check_ssl}
+                  onCheckedChange={(checked) =>
+                    setMonitoringSettings({ ...monitoringSettings, check_ssl: checked })
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Multi-Location Monitoring</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Check websites from multiple geographic locations
+                  </p>
+                </div>
+                <Switch
+                  data-testid="multi-location-switch"
+                  checked={monitoringSettings.multi_location}
+                  onCheckedChange={(checked) =>
+                    setMonitoringSettings({ ...monitoringSettings, multi_location: checked })
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Email Notifications</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Send email alerts for downtime and SSL expiration
+                  </p>
+                </div>
+                <Switch
+                  data-testid="email-notifications-switch"
+                  checked={monitoringSettings.email_notifications}
+                  onCheckedChange={(checked) =>
+                    setMonitoringSettings({ ...monitoringSettings, email_notifications: checked })
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Slack Notifications</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Send Slack alerts for downtime
+                  </p>
+                </div>
+                <Switch
+                  data-testid="slack-notifications-switch"
+                  checked={monitoringSettings.slack_notifications}
+                  onCheckedChange={(checked) =>
+                    setMonitoringSettings({ ...monitoringSettings, slack_notifications: checked })
+                  }
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="monitoring_interval">Monitoring Interval (minutes)</Label>
+                <Input
+                  data-testid="monitoring-interval-input"
+                  id="monitoring_interval"
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={monitoringSettings.monitoring_interval_minutes}
+                  onChange={(e) =>
+                    setMonitoringSettings({
+                      ...monitoringSettings,
+                      monitoring_interval_minutes: parseInt(e.target.value),
+                    })
+                  }
+                />
+                <p className="text-xs text-muted-foreground">
+                  How often to automatically check all websites (1-60 minutes)
+                </p>
+              </div>
+
+              <Button
+                data-testid="save-monitoring-settings-button"
+                onClick={handleUpdateMonitoringSettings}
+                disabled={loading}
+                className="w-full"
+              >
+                {loading ? 'Saving...' : 'Save Monitoring Settings'}
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Monitoring Status</CardTitle>
+              <CardDescription>Current monitoring configuration</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Automated Monitoring:</span>
+                  <span className="font-medium text-green-500">Active</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Check Interval:</span>
+                  <span className="font-medium">
+                    Every {monitoringSettings.monitoring_interval_minutes} minutes
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">SSL Monitoring:</span>
+                  <span className="font-medium">
+                    {monitoringSettings.check_ssl ? 'Enabled' : 'Disabled'}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Multi-Location:</span>
+                  <span className="font-medium">
+                    {monitoringSettings.multi_location ? 'Enabled' : 'Disabled'}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </>
+      ) : (
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <SettingsIcon className="h-12 w-12 text-muted-foreground mb-4" />
+            <p className="text-muted-foreground">
+              Only admins can configure monitoring settings
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </TabsContent>
+
+    {/* Notifications Tab */}
+    <TabsContent value="notifications" className="space-y-6 mt-6">
+      <Card data-testid="notification-settings-card">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Bell className="h-5 w-5" />
+            Notification Settings
+          </CardTitle>
+          <CardDescription>Configure where to receive alerts</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="notification_email">Email Address</Label>
+            <Input
+              data-testid="notification-email-input"
+              id="notification_email"
+              type="email"
+              placeholder="your@email.com"
+              value={notificationSettings.email}
+              onChange={(e) =>
+                setNotificationSettings({ ...notificationSettings, email: e.target.value })
+              }
+            />
+            <p className="text-xs text-muted-foreground">
+              Receive downtime and SSL expiration alerts via email
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="slack_webhook">Slack Webhook URL</Label>
+            <Input
+              data-testid="slack-webhook-input"
+              id="slack_webhook"
+              type="url"
+              placeholder="https://hooks.slack.com/services/..."
+              value={notificationSettings.slack_webhook}
+              onChange={(e) =>
+                setNotificationSettings({ ...notificationSettings, slack_webhook: e.target.value })
+              }
+            />
+            <p className="text-xs text-muted-foreground">
+              Receive instant Slack notifications for downtime
+            </p>
+          </div>
+
+          <Button
+            data-testid="save-notification-settings-button"
+            onClick={handleUpdateNotificationSettings}
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? 'Saving...' : 'Save Notification Settings'}
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>SMTP Configuration (Admin)</CardTitle>
+          <CardDescription>Configure email server settings in .env file</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2 text-sm bg-muted p-4 rounded-lg">
+            <p className="font-medium mb-2">Add these to your backend .env file:</p>
+            <code className="block">SMTP_HOST=smtp.gmail.com</code>
+            <code className="block">SMTP_PORT=587</code>
+            <code className="block">SMTP_USER=your-email@gmail.com</code>
+            <code className="block">SMTP_PASSWORD=your-app-password</code>
+            <code className="block">SMTP_FROM_EMAIL=your-email@gmail.com</code>
+          </div>
+        </CardContent>
+      </Card>
+    </TabsContent>
+  </Tabs>
     </div>
   );
 };

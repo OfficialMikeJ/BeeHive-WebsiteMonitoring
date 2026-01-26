@@ -32,7 +32,7 @@
 - **Page Speed Testing**: Analyze and improve website loading speeds
 - **SSL Certificate Monitoring**: Track SSL certificate expiration dates with alerts
 - **Multi-Location Monitoring**: Check websites from multiple geographic locations
-- **Email & Slack Notifications**: Receive instant alerts for downtime and SSL expiration
+- **Discord Notifications**: Receive instant alerts via Discord webhooks for downtime and SSL expiration
 
 ### Security & Authentication
 - **Username/Password Authentication**: Secure login system

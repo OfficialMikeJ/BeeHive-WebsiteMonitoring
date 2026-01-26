@@ -530,9 +530,15 @@ A: Yes, data is stored in MongoDB and can be exported using mongodump or custom 
 ## 📧 Support
 
 For issues, questions, or contributions:
-- Open an issue on GitHub
-- Submit a pull request
-- Contact: support@beehive-manager.com
+
+- **Discord Support**: Join our Discord server and open a ticket in the **#forms** channel
+  
+  [![Join Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://discord.gg/ykkkjwDnAD)
+  
+  Direct Link: https://discord.gg/ykkkjwDnAD
+
+- **GitHub Issues**: Report bugs and feature requests
+- **Pull Requests**: Contribute code improvements
 
 ---
 

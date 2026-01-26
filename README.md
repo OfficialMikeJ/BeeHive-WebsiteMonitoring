@@ -33,6 +33,9 @@
 - **SSL Certificate Monitoring**: Track SSL certificate expiration dates with alerts
 - **Multi-Location Monitoring**: Check websites from multiple geographic locations
 - **Discord Notifications**: Receive instant alerts via Discord webhooks for downtime and SSL expiration
+- **Custom Alert Thresholds**: Set custom latency limits and uptime requirements per website
+- **Export Reports**: Download monitoring data as PDF/CSV reports in convenient ZIP packages
+- **API Rate Limiting**: Protect your instance with built-in rate limiting on critical endpoints
 
 ### Security & Authentication
 - **Username/Password Authentication**: Secure login system

@@ -521,6 +521,68 @@ async def initialize_setup(user_data: UserCreate):
 async def root():
     return {"message": "BeeHive - Website Manager API"}
 
+# Monitoring Settings Endpoints
+@api_router.get("/settings/monitoring")
+async def get_monitoring_settings(current_user: dict = Depends(get_current_user)):
+    settings = await db.settings.find_one({"key": "monitoring"}, {"_id": 0})
+    if not settings:
+        # Return defaults
+        return {
+            "key": "monitoring",
+            "check_ssl": True,
+            "multi_location": False,
+            "notifications_enabled": True,
+            "monitoring_interval_minutes": 5,
+            "email_notifications": True,
+            "slack_notifications": False
+        }
+    return settings
+
+@api_router.post("/settings/monitoring")
+async def update_monitoring_settings(settings: MonitoringSettings, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can update settings")
+    
+    settings_dict = settings.model_dump()
+    settings_dict["key"] = "monitoring"
+    
+    await db.settings.update_one(
+        {"key": "monitoring"},
+        {"$set": settings_dict},
+        upsert=True
+    )
+    
+    # Update environment variable for monitoring interval
+    os.environ['MONITORING_INTERVAL_MINUTES'] = str(settings.monitoring_interval_minutes)
+    
+    return {"message": "Monitoring settings updated successfully", "settings": settings_dict}
+
+@api_router.get("/settings/notifications")
+async def get_notification_settings(current_user: dict = Depends(get_current_user)):
+    user_settings = await db.user_settings.find_one({"user_id": current_user["id"]}, {"_id": 0})
+    if not user_settings:
+        return {"user_id": current_user["id"], "email": current_user.get("email"), "slack_webhook": None}
+    return user_settings
+
+@api_router.post("/settings/notifications")
+async def update_notification_settings(settings: NotificationSettings, current_user: dict = Depends(get_current_user)):
+    settings_dict = settings.model_dump()
+    settings_dict["user_id"] = current_user["id"]
+    
+    await db.user_settings.update_one(
+        {"user_id": current_user["id"]},
+        {"$set": settings_dict},
+        upsert=True
+    )
+    
+    # Update SMTP and Slack environment variables if provided
+    if settings.email and "@" in settings.email:
+        os.environ['SMTP_TO_EMAIL'] = settings.email
+    if settings.slack_webhook:
+        os.environ['SLACK_WEBHOOK_URL'] = settings.slack_webhook
+    
+    return {"message": "Notification settings updated successfully"}
+
 # Include the router in the main app
 app.include_router(api_router)
 

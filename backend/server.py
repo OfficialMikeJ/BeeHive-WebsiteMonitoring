@@ -549,6 +549,78 @@ async def initialize_setup(user_data: UserCreate):
 async def root():
     return {"message": "BeeHive - Website Manager API"}
 
+# Alert Thresholds Endpoints
+@api_router.get("/thresholds")
+async def get_alert_thresholds(current_user: dict = Depends(get_current_user)):
+    thresholds = await db.alert_thresholds.find({"user_id": current_user["id"]}, {"_id": 0}).to_list(None)
+    return thresholds
+
+@api_router.post("/thresholds")
+async def create_alert_threshold(threshold: AlertThreshold, current_user: dict = Depends(get_current_user)):
+    # Check if website belongs to user
+    website = await db.websites.find_one({"id": threshold.website_id}, {"_id": 0})
+    if not website:
+        raise HTTPException(status_code=404, detail="Website not found")
+    
+    if website["owner_id"] != current_user["id"] and current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    threshold_dict = threshold.model_dump()
+    threshold_dict["id"] = str(uuid.uuid4())
+    threshold_dict["user_id"] = current_user["id"]
+    threshold_dict["created_at"] = datetime.now(timezone.utc).isoformat()
+    
+    await db.alert_thresholds.insert_one(threshold_dict)
+    return {"message": "Alert threshold created successfully", "threshold": threshold_dict}
+
+@api_router.put("/thresholds/{threshold_id}")
+async def update_alert_threshold(threshold_id: str, threshold: AlertThreshold, current_user: dict = Depends(get_current_user)):
+    existing = await db.alert_thresholds.find_one({"id": threshold_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Threshold not found")
+    
+    if existing["user_id"] != current_user["id"] and current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    threshold_dict = threshold.model_dump()
+    await db.alert_thresholds.update_one({"id": threshold_id}, {"$set": threshold_dict})
+    
+    return {"message": "Alert threshold updated successfully"}
+
+@api_router.delete("/thresholds/{threshold_id}")
+async def delete_alert_threshold(threshold_id: str, current_user: dict = Depends(get_current_user)):
+    existing = await db.alert_thresholds.find_one({"id": threshold_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Threshold not found")
+    
+    if existing["user_id"] != current_user["id"] and current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    await db.alert_thresholds.delete_one({"id": threshold_id})
+    return {"message": "Alert threshold deleted successfully"}
+
+# Export Reports Endpoint
+@api_router.post("/export/report")
+@limiter.limit("5/minute")
+async def export_report(request: Request, export_req: ExportRequest, current_user: dict = Depends(get_current_user)):
+    """Export monitoring report as ZIP file"""
+    try:
+        zip_content = await generate_monitoring_report(db, current_user["id"], export_req.days, export_req.format)
+        
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
+        filename = f"beehive_report_{timestamp}.zip"
+        
+        return Response(
+            content=zip_content,
+            media_type="application/zip",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error generating report: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to generate report")
+
 # Monitoring Settings Endpoints
 @api_router.get("/settings/monitoring")
 async def get_monitoring_settings(current_user: dict = Depends(get_current_user)):

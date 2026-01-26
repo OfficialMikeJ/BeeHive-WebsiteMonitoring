@@ -138,6 +138,17 @@ class MonitoringSettings(BaseModel):
 class NotificationSettings(BaseModel):
     discord_webhook: Optional[str] = None
 
+class AlertThreshold(BaseModel):
+    website_id: str
+    max_latency: Optional[int] = None  # milliseconds
+    min_uptime: Optional[float] = None  # percentage
+    ssl_days_warning: int = 30  # days before expiry to alert
+    enabled: bool = True
+
+class ExportRequest(BaseModel):
+    days: int = 30
+    format: str = "both"  # pdf, csv, or both
+
 # Helper Functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')

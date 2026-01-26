@@ -18,6 +18,7 @@ import io
 import httpx
 import asyncio
 import time
+from monitoring_scheduler import start_scheduler, monitor_website_complete
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')

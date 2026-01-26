@@ -604,6 +604,13 @@ logger = logging.getLogger(__name__)
 @app.on_event("startup")
 async def startup_event():
     logger.info("BeeHive - Website Manager starting up...")
+    # Start the monitoring scheduler
+    try:
+        scheduler = start_scheduler()
+        app.state.scheduler = scheduler
+        logger.info("Monitoring scheduler started successfully")
+    except Exception as e:
+        logger.error(f"Failed to start monitoring scheduler: {str(e)}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

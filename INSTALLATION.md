@@ -299,11 +299,17 @@ docker rmi beehive-backend beehive-frontend
 
 ---
 
-## Getting Help
+## 🆘 Need Help?
 
-- **Documentation**: See [README.md](README.md) for detailed features
-- **Issues**: Report bugs on GitHub Issues
-- **Discussions**: Join community discussions on GitHub
+- **Discord Support**: Join our Discord and open a ticket in **#forms** channel
+  
+  [![Join Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://discord.gg/ykkkjwDnAD)
+  
+  https://discord.gg/ykkkjwDnAD
+
+- **Full Documentation**: See [README.md](README.md)
+- **Contributing**: See [CONTRIBUTING.md](CONTRIBUTING.md)
+- **GitHub Issues**: Report bugs on GitHub
 
 ---
 

@@ -233,10 +233,16 @@ async def login(user_data: UserLogin):
         if not totp.verify(user_data.totp_code):
             raise HTTPException(status_code=401, detail="Invalid 2FA code")
     
+    # Set token expiration based on remember_me
+    if user_data.remember_me:
+        token_expiry = timedelta(days=60)
+    else:
+        token_expiry = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    
     # Create token
     access_token = create_access_token(
         data={"sub": user["id"]},
-        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expires_delta=token_expiry
     )
     
     user_response = {

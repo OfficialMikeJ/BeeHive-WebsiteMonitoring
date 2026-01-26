@@ -417,8 +417,14 @@ async def check_website(website_id: str, background_tasks: BackgroundTasks, curr
     if not website:
         raise HTTPException(status_code=404, detail="Website not found")
     
-    background_tasks.add_task(monitor_website, website_id, website["url"])
-    return {"message": "Website check initiated"}
+    # Get monitoring settings
+    settings = await db.settings.find_one({"key": "monitoring"}) or {}
+    check_ssl = settings.get("check_ssl", True)
+    multi_location = settings.get("multi_location", False)
+    
+    # Use advanced monitoring
+    background_tasks.add_task(monitor_website_complete, website_id, website["url"], check_ssl, multi_location)
+    return {"message": "Website check initiated with advanced monitoring"}
 
 # Monitoring Data
 @api_router.get("/monitoring/{website_id}")

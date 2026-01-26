@@ -614,4 +614,8 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
+    # Shutdown scheduler
+    if hasattr(app.state, 'scheduler'):
+        app.state.scheduler.shutdown()
+        logger.info("Monitoring scheduler shut down")
     client.close()

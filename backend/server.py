@@ -568,7 +568,7 @@ async def update_monitoring_settings(settings: MonitoringSettings, current_user:
 async def get_notification_settings(current_user: dict = Depends(get_current_user)):
     user_settings = await db.user_settings.find_one({"user_id": current_user["id"]}, {"_id": 0})
     if not user_settings:
-        return {"user_id": current_user["id"], "email": current_user.get("email"), "slack_webhook": None}
+        return {"user_id": current_user["id"], "discord_webhook": None}
     return user_settings
 
 @api_router.post("/settings/notifications")
@@ -582,11 +582,9 @@ async def update_notification_settings(settings: NotificationSettings, current_u
         upsert=True
     )
     
-    # Update SMTP and Slack environment variables if provided
-    if settings.email and "@" in settings.email:
-        os.environ['SMTP_TO_EMAIL'] = settings.email
-    if settings.slack_webhook:
-        os.environ['SLACK_WEBHOOK_URL'] = settings.slack_webhook
+    # Update Discord webhook environment variable if provided
+    if settings.discord_webhook:
+        os.environ['DISCORD_WEBHOOK_URL'] = settings.discord_webhook
     
     return {"message": "Notification settings updated successfully"}
 

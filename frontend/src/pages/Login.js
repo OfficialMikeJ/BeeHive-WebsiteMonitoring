@@ -16,6 +16,7 @@ const Login = ({ onLogin }) => {
     username: '',
     password: '',
     totp_code: '',
+    remember_me: false,
   });
   const [loading, setLoading] = useState(false);
   const [requires2FA, setRequires2FA] = useState(false);

@@ -30,7 +30,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
    ```
 3. **Add upstream remote**:
    ```bash
-   git remote add upstream https://github.com/original-owner/beehive-manager.git
+   git remote add upstream https://github.com/OfficialMikeJ/beehive-manager.git
    ```
 
 ---

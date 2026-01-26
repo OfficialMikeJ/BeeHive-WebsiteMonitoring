@@ -185,56 +185,48 @@ async def check_and_notify(website: Dict[str, Any], monitoring_data: Dict[str, A
     website_name = website["name"]
     website_url = website["url"]
     
+    # Get user settings for Discord webhook
+    owner = await db.users.find_one({"id": website["owner_id"]}, {"_id": 0})
+    if not owner:
+        return
+    
+    user_settings = await db.user_settings.find_one({"user_id": owner["id"]}, {"_id": 0})
+    discord_webhook = user_settings.get("discord_webhook") if user_settings else None
+    
+    # Use global webhook if user hasn't configured one
+    if not discord_webhook:
+        discord_webhook = os.environ.get('DISCORD_WEBHOOK_URL')
+    
+    if not discord_webhook:
+        logger.debug("No Discord webhook configured, skipping notifications")
+        return
+    
     # Check for downtime
     if not monitoring_data["is_online"]:
-        # Get owner information
-        owner = await db.users.find_one({"id": website["owner_id"]}, {"_id": 0})
-        if owner and owner.get("email"):
-            subject = f"🚨 BeeHive Alert: {website_name} is DOWN"
-            body = f"""
-            <html>
-            <body>
-                <h2>Website Down Alert</h2>
-                <p>Your website <strong>{website_name}</strong> is currently unreachable.</p>
-                <p><strong>URL:</strong> {website_url}</p>
-                <p><strong>Time:</strong> {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}</p>
-                <p><strong>Error:</strong> {monitoring_data.get('error_message', 'Unknown error')}</p>
-                <p>Please check your website as soon as possible.</p>
-                <hr>
-                <p><em>BeeHive - Website Manager</em></p>
-            </body>
-            </html>
-            """
-            await send_email_notification(owner["email"], subject, body)
+        title = f"🚨 Website Down: {website_name}"
+        description = f"""
+**URL:** {website_url}
+**Status:** Offline
+**Time:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}
+**Error:** {monitoring_data.get('error_message', 'Unknown error')}
+
+Please check your website immediately.
+"""
+        await send_discord_notification(discord_webhook, title, description, color=0xFF0000)
     
     # Check for SSL expiration
     ssl_info = monitoring_data.get("ssl_info")
     if ssl_info and ssl_info.get("expires_soon"):
         days_left = ssl_info.get("days_until_expiry", 0)
-        owner = await db.users.find_one({"id": website["owner_id"]}, {"_id": 0})
-        if owner and owner.get("email"):
-            subject = f"⚠️ BeeHive Alert: SSL Certificate Expiring Soon for {website_name}"
-            body = f"""
-            <html>
-            <body>
-                <h2>SSL Certificate Expiration Warning</h2>
-                <p>The SSL certificate for <strong>{website_name}</strong> is expiring soon.</p>
-                <p><strong>URL:</strong> {website_url}</p>
-                <p><strong>Days Until Expiry:</strong> {days_left} days</p>
-                <p><strong>Expiry Date:</strong> {ssl_info.get('expiry_date')}</p>
-                <p>Please renew your SSL certificate to avoid service disruption.</p>
-                <hr>
-                <p><em>BeeHive - Website Manager</em></p>
-            </body>
-            </html>
-            """
-            await send_email_notification(owner["email"], subject, body)
-    
-    # Send Slack notification if webhook is configured
-    slack_webhook = os.environ.get('SLACK_WEBHOOK_URL')
-    if slack_webhook and not monitoring_data["is_online"]:
-        message = f"🚨 *{website_name}* is DOWN\nURL: {website_url}\nTime: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}"
-        await send_slack_notification(slack_webhook, message)
+        title = f"⚠️ SSL Certificate Expiring Soon: {website_name}"
+        description = f"""
+**URL:** {website_url}
+**Days Until Expiry:** {days_left} days
+**Expiry Date:** {ssl_info.get('expiry_date', 'Unknown')}
+
+Please renew your SSL certificate to avoid service disruption.
+"""
+        await send_discord_notification(discord_webhook, title, description, color=0xFFA500)
 
 
 async def scheduled_monitoring_task():

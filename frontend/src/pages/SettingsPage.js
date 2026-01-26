@@ -203,7 +203,15 @@ const SettingsPage = ({ user }) => {
         <p className="text-muted-foreground">Manage your account settings and security</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <Tabs defaultValue="security" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="security">Security</TabsTrigger>
+          <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="security" className="space-y-6 mt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Change Password */}
         <Card data-testid="change-password-card">
           <CardHeader>

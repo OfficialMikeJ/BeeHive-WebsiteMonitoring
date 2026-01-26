@@ -145,7 +145,18 @@ BeeHive is fully responsive! Access from any device:
 
 ## 🔒 Security Tips
 
-1. Change default JWT_SECRET in production
+1. **Generate a secure JWT_SECRET** before deploying to production:
+   ```bash
+   # Use OpenSSL to generate a secure token
+   openssl rand -base64 32
+   ```
+   **🚨 DO NOT SHARE YOUR JWT TOKEN WITH ANYONE. PERIOD.**
+   
+   Your JWT secret is like the master key to your monitoring system. Exposing it allows:
+   - Unauthorized access to all accounts
+   - Complete control over your monitoring data
+   - Ability to forge authentication tokens
+   
 2. Enable 2FA for all accounts
 3. Use strong passwords (12+ characters)
 4. Keep Docker images updated

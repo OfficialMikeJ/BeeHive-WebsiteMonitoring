@@ -22,6 +22,85 @@ const SettingsPage = ({ user }) => {
   const [twoFASetup, setTwoFASetup] = useState(null);
   const [twoFACode, setTwoFACode] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // Monitoring settings state
+  const [monitoringSettings, setMonitoringSettings] = useState({
+    check_ssl: true,
+    multi_location: false,
+    notifications_enabled: true,
+    monitoring_interval_minutes: 5,
+    email_notifications: true,
+    slack_notifications: false,
+  });
+  
+  const [notificationSettings, setNotificationSettings] = useState({
+    email: '',
+    slack_webhook: '',
+  });
+
+  useEffect(() => {
+    fetchMonitoringSettings();
+    fetchNotificationSettings();
+  }, []);
+
+  const fetchMonitoringSettings = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/settings/monitoring`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMonitoringSettings(response.data);
+    } catch (error) {
+      console.error('Error fetching monitoring settings:', error);
+    }
+  };
+
+  const fetchNotificationSettings = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/settings/notifications`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setNotificationSettings(response.data);
+    } catch (error) {
+      console.error('Error fetching notification settings:', error);
+    }
+  };
+
+  const handleUpdateMonitoringSettings = async () => {
+    if (user?.role !== 'admin') {
+      toast.error('Only admins can update monitoring settings');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${API}/settings/monitoring`, monitoringSettings, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success('Monitoring settings updated successfully');
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to update settings');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateNotificationSettings = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${API}/settings/notifications`, notificationSettings, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success('Notification settings updated successfully');
+    } catch (error) {
+      toast.error('Failed to update notification settings');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();

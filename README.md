@@ -230,20 +230,21 @@ After logging in, you'll see:
 ### Setting Up Notifications
 
 1. Go to **Settings** page → **Notifications** tab
-2. Enter your **Email Address** for alerts
-3. (Optional) Add **Slack Webhook URL** for instant notifications
-4. Click **"Save Notification Settings"**
+2. Enter your **Discord Webhook URL**
+3. Click **"Save Notification Settings"**
 
-**Email Setup (SMTP)**: Add to backend `.env`:
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
-SMTP_FROM_EMAIL=your-email@gmail.com
-```
+**Discord Webhook Setup:**
+1. Go to your Discord server
+2. Navigate to **Server Settings** → **Integrations** → **Webhooks**
+3. Click **"New Webhook"** or **"Create Webhook"**
+4. Choose the channel for notifications
+5. Copy the **Webhook URL**
+6. Paste it in BeeHive Settings
 
-**Slack Setup**: Create a webhook at https://api.slack.com/messaging/webhooks
+You'll receive instant alerts in Discord for:
+- Website downtime
+- SSL certificate expiration warnings (30 days before expiry)
+- Website back online notifications
 
 ---
 

@@ -649,14 +649,14 @@ For issues, questions, or contributions:
 
 ## 🚀 Roadmap
 
-- [x] Automated scheduled monitoring
-- [x] Email/Slack notifications
-- [x] SSL certificate expiration tracking
-- [x] Multi-location monitoring
+- ✅ Automated scheduled monitoring
+- ✅ Discord Webhooks for notifications
+- ✅ SSL certificate expiration tracking
+- ✅ Multi-location monitoring
 - [ ] Custom alert thresholds
 - [ ] Export reports (PDF/CSV)
 - [ ] API rate limiting
-- [ ] Webhook integrations
+- [ ] Additional webhook integrations (Slack, Microsoft Teams)
 
 ---
 

@@ -26,9 +26,13 @@
 
 ### Core Features
 - **Website Monitoring**: Track latency (ping time) and page load speed for up to 10 websites
-- **Real-time Checks**: Manual and automated website health checks
+- **Automated Monitoring**: Schedule automatic checks at configurable intervals (1-60 minutes)
+- **Real-time Checks**: Manual website health checks with instant results
 - **Performance Analytics**: View detailed charts and statistics over time
 - **Page Speed Testing**: Analyze and improve website loading speeds
+- **SSL Certificate Monitoring**: Track SSL certificate expiration dates with alerts
+- **Multi-Location Monitoring**: Check websites from multiple geographic locations
+- **Email & Slack Notifications**: Receive instant alerts for downtime and SSL expiration
 
 ### Security & Authentication
 - **Username/Password Authentication**: Secure login system

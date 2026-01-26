@@ -3,7 +3,24 @@
 <div align="center">
   <h3>🐝 Self-Hostable Website Monitoring Tool 🐝</h3>
   <p>Monitor website latency, page speed, and uptime with ease</p>
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![Join Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://discord.gg/ykkkjwDnAD)
+  ![Docker](https://img.shields.io/badge/Docker-Ready-blue)
+  ![Security](https://img.shields.io/badge/Security-2FA-green)
 </div>
+
+---
+
+## 📚 Documentation
+
+- [Quick Start Guide](QUICKSTART.md) - Get running in 5 minutes
+- [Installation Guide](INSTALLATION.md) - Detailed setup instructions
+- [Security Best Practices](SECURITY.md) - **Read this before deploying to production**
+- [Contributing Guide](CONTRIBUTING.md) - How to contribute
+- [API Documentation](#api-documentation) - API endpoints reference
+
+---
 
 ## 🌟 Features
 

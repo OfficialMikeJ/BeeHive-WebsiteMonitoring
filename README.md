@@ -63,7 +63,36 @@ git clone https://github.com/OfficialMikeJ/beehive-manager.git
 cd beehive-manager
 ```
 
-2. **Configure environment variables**
+2. **Generate a Secure JWT Secret**
+
+**⚠️ CRITICAL SECURITY STEP ⚠️**
+
+Before deploying to production, you MUST generate a secure JWT secret token:
+
+```bash
+# Generate a secure random JWT secret (Linux/Mac)
+openssl rand -base64 32
+
+# Or using Python
+python3 -c "import secrets; print(secrets.token_urlsafe(32))"
+
+# Or using Node.js
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+**🚨 SECURITY WARNING 🚨**
+
+**DO NOT SHARE YOUR JWT TOKEN WITH ANYONE. PERIOD.**
+
+Sharing your JWT secret will:
+- Expose your monitoring tool to unauthorized access
+- Allow attackers to forge authentication tokens
+- Compromise all user accounts
+- Grant full access to your monitoring data
+
+Keep this token secure like a password!
+
+3. **Configure environment variables**
 
 The application uses default environment variables that work out of the box. However, for production deployment, you should update the following:
 

@@ -216,6 +216,35 @@ After logging in, you'll see:
 4. Click **"Create Sub-Admin"**
 5. Sub-admins can now login and manage websites
 
+### Configuring Automated Monitoring (Admin Only)
+
+1. Go to **Settings** page → **Monitoring** tab
+2. Configure monitoring options:
+   - **SSL Certificate Checking**: Monitor SSL expiration (30-day warning)
+   - **Multi-Location Monitoring**: Check from multiple locations
+   - **Email Notifications**: Receive downtime alerts via email
+   - **Slack Notifications**: Get instant Slack alerts
+   - **Monitoring Interval**: Set check frequency (1-60 minutes)
+3. Click **"Save Monitoring Settings"**
+
+### Setting Up Notifications
+
+1. Go to **Settings** page → **Notifications** tab
+2. Enter your **Email Address** for alerts
+3. (Optional) Add **Slack Webhook URL** for instant notifications
+4. Click **"Save Notification Settings"**
+
+**Email Setup (SMTP)**: Add to backend `.env`:
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+SMTP_FROM_EMAIL=your-email@gmail.com
+```
+
+**Slack Setup**: Create a webhook at https://api.slack.com/messaging/webhooks
+
 ---
 
 ## 🐳 Docker Deployment

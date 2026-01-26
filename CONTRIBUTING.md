@@ -254,9 +254,12 @@ Check the [Issues](https://github.com/original-owner/beehive-manager/issues) pag
 
 If you have questions about contributing:
 
-1. Check existing [Issues](https://github.com/original-owner/beehive-manager/issues)
-2. Start a [Discussion](https://github.com/original-owner/beehive-manager/discussions)
-3. Contact the maintainers
+1. **Join our Discord** - Open a ticket in **#forms** channel
+   
+   [![Join Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://discord.gg/ykkkjwDnAD)
+   
+2. Check existing [Issues](https://github.com/OfficialMikeJ/beehive-manager/issues)
+3. Start a [Discussion](https://github.com/OfficialMikeJ/beehive-manager/discussions)
 
 ---
 

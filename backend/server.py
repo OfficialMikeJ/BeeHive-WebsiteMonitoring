@@ -227,7 +227,8 @@ async def monitor_website(website_id: str, url: str):
 
 # Auth Routes
 @api_router.post("/auth/register", response_model=User)
-async def register(user_data: UserCreate, current_user: dict = Depends(get_current_user)):
+@limiter.limit("10/hour")
+async def register(request: Request, user_data: UserCreate, current_user: dict = Depends(get_current_user)):
     # Only admins can create new users
     if current_user["role"] != "admin":
         raise HTTPException(status_code=403, detail="Only admins can create users")

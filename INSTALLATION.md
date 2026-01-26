@@ -28,7 +28,7 @@ git --version
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/beehive-manager.git
+git clone https://github.com/OfficialMikeJ/beehive-manager.git
 cd beehive-manager
 ```
 

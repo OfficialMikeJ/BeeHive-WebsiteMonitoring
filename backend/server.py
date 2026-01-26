@@ -49,6 +49,7 @@ class UserLogin(BaseModel):
     username: str
     password: str
     totp_code: Optional[str] = None
+    remember_me: bool = False
 
 class User(BaseModel):
     model_config = ConfigDict(extra="ignore")

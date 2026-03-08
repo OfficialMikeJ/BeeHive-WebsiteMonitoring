@@ -127,3 +127,21 @@ code {
 .dark span {
     opacity: 1 !important;
 }
+
+/* Improve light mode contrast */
+.text-muted-foreground {
+    color: hsl(0 0% 25%) !important;
+}
+
+/* Make input placeholders more visible */
+input::placeholder,
+textarea::placeholder {
+    color: hsl(0 0% 50%) !important;
+    opacity: 1 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+    color: hsl(0 0% 60%) !important;
+    opacity: 1 !important;
+}

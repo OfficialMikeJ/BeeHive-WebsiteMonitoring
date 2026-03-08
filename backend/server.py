@@ -332,6 +332,78 @@ async def change_password(password_data: PasswordChange, current_user: dict = De
     
     return {"message": "Password changed successfully"}
 
+@api_router.post("/auth/upload-profile-picture")
+@limiter.limit("10/hour")
+async def upload_profile_picture(request: Request, file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
+    """Upload and update user profile picture"""
+    # Validate file type
+    allowed_types = ["image/jpeg", "image/png", "image/jpg", "image/webp"]
+    if file.content_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Only JPEG, PNG, and WebP images are allowed")
+    
+    try:
+        # Read file
+        contents = await file.read()
+        
+        # Validate file size (max 2MB)
+        if len(contents) > 2 * 1024 * 1024:
+            raise HTTPException(status_code=400, detail="File size must be less than 2MB")
+        
+        # Open and resize image
+        image = Image.open(io.BytesIO(contents))
+        
+        # Convert to RGB if necessary (for PNG with transparency)
+        if image.mode in ("RGBA", "LA", "P"):
+            background = Image.new("RGB", image.size, (255, 255, 255))
+            if image.mode == "P":
+                image = image.convert("RGBA")
+            background.paste(image, mask=image.split()[-1] if image.mode == "RGBA" else None)
+            image = background
+        
+        # Resize to 200x200 (profile picture size)
+        image.thumbnail((200, 200), Image.Resampling.LANCZOS)
+        
+        # Save to bytes
+        output = io.BytesIO()
+        image.save(output, format="JPEG", quality=85, optimize=True)
+        output.seek(0)
+        
+        # Convert to base64
+        image_base64 = base64.b64encode(output.read()).decode('utf-8')
+        image_data_url = f"data:image/jpeg;base64,{image_base64}"
+        
+        # Update user profile picture in database
+        await db.users.update_one(
+            {"id": current_user["id"]},
+            {"$set": {"profile_picture": image_data_url, "profile_picture_updated_at": datetime.now(timezone.utc).isoformat()}}
+        )
+        
+        return {
+            "message": "Profile picture uploaded successfully",
+            "profile_picture": image_data_url
+        }
+    
+    except Exception as e:
+        logger.error(f"Error uploading profile picture: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to upload profile picture")
+
+@api_router.delete("/auth/delete-profile-picture")
+async def delete_profile_picture(current_user: dict = Depends(get_current_user)):
+    """Delete user profile picture"""
+    await db.users.update_one(
+        {"id": current_user["id"]},
+        {"$unset": {"profile_picture": "", "profile_picture_updated_at": ""}}
+    )
+    
+    return {"message": "Profile picture deleted successfully"}
+
+@api_router.get("/auth/profile-picture")
+async def get_profile_picture(current_user: dict = Depends(get_current_user)):
+    """Get current user's profile picture"""
+    user = await db.users.find_one({"id": current_user["id"]}, {"_id": 0, "profile_picture": 1})
+    return {"profile_picture": user.get("profile_picture")}
+
+
 @api_router.post("/auth/2fa/setup")
 async def setup_2fa(current_user: dict = Depends(get_current_user)):
     secret = pyotp.random_base32()

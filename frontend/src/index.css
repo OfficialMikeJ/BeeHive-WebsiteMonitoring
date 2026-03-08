@@ -145,3 +145,91 @@ textarea::placeholder {
     color: hsl(0 0% 60%) !important;
     opacity: 1 !important;
 }
+
+/* Improve text sizing and boldness for better readability */
+.text-sm {
+    font-size: 0.9375rem !important; /* Increased from 0.875rem (14px to 15px) */
+    line-height: 1.5rem !important;
+}
+
+.text-base {
+    font-size: 1.0625rem !important; /* Increased from 1rem (16px to 17px) */
+    line-height: 1.625rem !important;
+}
+
+/* Make card titles bolder and slightly larger */
+[class*="CardTitle"] {
+    font-size: 1.125rem !important; /* 18px */
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
+}
+
+/* Make card descriptions more readable */
+[class*="CardDescription"] {
+    font-size: 0.9375rem !important; /* 15px */
+    font-weight: 400 !important;
+}
+
+/* Make labels bolder */
+label {
+    font-weight: 500 !important;
+    font-size: 0.9375rem !important; /* 15px */
+}
+
+/* Make paragraph text slightly larger and semi-bold where appropriate */
+p {
+    font-size: 0.9375rem !important; /* 15px */
+    line-height: 1.6 !important;
+}
+
+/* Make important text stand out more */
+.font-medium {
+    font-weight: 600 !important;
+}
+
+.font-semibold {
+    font-weight: 700 !important;
+}
+
+/* Button text sizing */
+button {
+    font-weight: 500 !important;
+    font-size: 0.9375rem !important; /* 15px */
+}
+
+/* Navigation items */
+nav button,
+nav a {
+    font-size: 1rem !important; /* 16px */
+    font-weight: 500 !important;
+}
+
+/* Stats and numbers should be bold and prominent */
+.text-2xl {
+    font-weight: 700 !important;
+}
+
+/* Small text shouldn't be too small */
+.text-xs {
+    font-size: 0.8125rem !important; /* Increased from 0.75rem (12px to 13px) */
+}
+
+/* Table and list text */
+table,
+ul,
+ol {
+    font-size: 0.9375rem !important; /* 15px */
+}
+
+/* Make headings more prominent */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+}
+
+/* Input text sizing */
+input,
+textarea,
+select {
+    font-size: 0.9375rem !important; /* 15px */
+}

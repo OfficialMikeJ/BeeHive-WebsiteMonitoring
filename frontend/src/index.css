@@ -28,7 +28,7 @@ code {
         --secondary: 45 100% 95%;
         --secondary-foreground: 0 0% 5%;
         --muted: 45 20% 96%;
-        --muted-foreground: 0 0% 45%;
+        --muted-foreground: 0 0% 20%;
         --accent: 45 100% 50%;
         --accent-foreground: 0 0% 0%;
         --destructive: 0 84% 60%;
@@ -50,7 +50,7 @@ code {
         --secondary: 0 0% 12%;
         --secondary-foreground: 0 0% 98%;
         --muted: 0 0% 12%;
-        --muted-foreground: 0 0% 65%;
+        --muted-foreground: 0 0% 85%;
         --accent: 45 100% 50%;
         --accent-foreground: 0 0% 0%;
         --destructive: 0 62% 30%;
@@ -100,4 +100,30 @@ code {
         border-top-color: inherit;
         border-bottom-color: inherit;
     }
+}
+
+/* Override muted text to be more visible */
+.text-muted-foreground {
+    color: hsl(var(--foreground) / 0.9) !important;
+}
+
+.dark .text-muted-foreground {
+    color: hsl(0 0% 90%) !important;
+}
+
+/* Make card descriptions more visible */
+.dark [class*="CardDescription"] {
+    color: hsl(0 0% 85%) !important;
+}
+
+/* Make labels more visible */
+.dark label {
+    color: hsl(0 0% 95%) !important;
+}
+
+/* Make all text in cards more visible in dark mode */
+.dark .text-sm,
+.dark p,
+.dark span {
+    opacity: 1 !important;
 }

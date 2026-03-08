@@ -42,6 +42,7 @@ const SettingsPage = ({ user }) => {
   useEffect(() => {
     fetchMonitoringSettings();
     fetchNotificationSettings();
+    fetchProfilePicture();
   }, []);
 
   const fetchMonitoringSettings = async () => {

@@ -47,6 +47,21 @@ app = FastAPI(title="BeeHive - Website Manager")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+# Add validation error handler
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Convert validation errors to user-friendly messages"""
+    errors = []
+    for error in exc.errors():
+        field = " -> ".join(str(loc) for loc in error["loc"])
+        message = error["msg"]
+        errors.append(f"{field}: {message}")
+    
+    return JSONResponse(
+        status_code=422,
+        content={"detail": " | ".join(errors)}
+    )
+
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 

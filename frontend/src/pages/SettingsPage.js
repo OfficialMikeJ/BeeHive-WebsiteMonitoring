@@ -544,36 +544,6 @@ const SettingsPage = ({ user }) => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Account Info */}
-      <Card data-testid="account-info-card">
-        <CardHeader>
-          <CardTitle>Account Information</CardTitle>
-          <CardDescription>Your account details</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label className="text-muted-foreground">Username</Label>
-              <p className="font-medium mt-1">{user?.username}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Email</Label>
-              <p className="font-medium mt-1">{user?.email}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Role</Label>
-              <p className="font-medium mt-1 capitalize">{user?.role}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">2FA Status</Label>
-              <p className={`font-medium mt-1 ${user?.twofa_enabled ? 'text-green-500' : ''}`}>
-                {user?.twofa_enabled ? 'Enabled' : 'Disabled'}
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </TabsContent>
 
     {/* Monitoring Settings Tab */}

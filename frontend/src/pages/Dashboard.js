@@ -81,6 +81,20 @@ const Dashboard = ({ user, onLogout }) => {
               >
                 {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </Button>
+              {user?.profile_picture ? (
+                <img
+                  src={user.profile_picture}
+                  alt={user.username}
+                  className="w-10 h-10 rounded-full object-cover border-2 border-primary"
+                  data-testid="header-profile-picture"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary">
+                  <span className="text-primary font-bold text-sm">
+                    {user?.username?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
               <div className="text-sm text-right hidden sm:block">
                 <p className="font-medium">{user?.username}</p>
                 <p className="text-xs text-muted-foreground capitalize">{user?.role}</p>

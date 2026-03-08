@@ -22,6 +22,9 @@ const SettingsPage = ({ user }) => {
   const [twoFASetup, setTwoFASetup] = useState(null);
   const [twoFACode, setTwoFACode] = useState('');
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   
   // Monitoring settings state
   const [monitoringSettings, setMonitoringSettings] = useState({

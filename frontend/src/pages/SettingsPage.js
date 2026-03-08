@@ -69,6 +69,94 @@ const SettingsPage = ({ user }) => {
     }
   };
 
+  const fetchProfilePicture = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/auth/profile-picture`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProfilePicture(response.data.profile_picture);
+    } catch (error) {
+      console.error('Error fetching profile picture:', error);
+    }
+  };
+
+  const handleProfilePictureUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Only JPEG, PNG, and WebP images are allowed');
+      return;
+    }
+
+    // Validate file size (2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('File size must be less than 2MB');
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const token = localStorage.getItem('token');
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await axios.post(`${API}/auth/upload-profile-picture`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setProfilePicture(response.data.profile_picture);
+      
+      // Update user in localStorage
+      const userData = JSON.parse(localStorage.getItem('user'));
+      userData.profile_picture = response.data.profile_picture;
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      toast.success('Profile picture uploaded successfully');
+      
+      // Reload to update header
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to upload profile picture');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleDeleteProfilePicture = async () => {
+    if (!window.confirm('Are you sure you want to delete your profile picture?')) return;
+
+    setUploadingImage(true);
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`${API}/auth/delete-profile-picture`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setProfilePicture(null);
+      
+      // Update user in localStorage
+      const userData = JSON.parse(localStorage.getItem('user'));
+      delete userData.profile_picture;
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      toast.success('Profile picture deleted successfully');
+      
+      // Reload to update header
+      window.location.reload();
+    } catch (error) {
+      toast.error('Failed to delete profile picture');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const handleUpdateMonitoringSettings = async () => {
     if (user?.role !== 'admin') {
       toast.error('Only admins can update monitoring settings');

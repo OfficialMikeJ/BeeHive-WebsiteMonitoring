@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, BackgroundTasks, Header, Request
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, BackgroundTasks, Header, Request, File, UploadFile
 from fastapi.responses import StreamingResponse, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -20,6 +20,8 @@ import io
 import httpx
 import asyncio
 import time
+import base64
+from PIL import Image
 from monitoring_scheduler import start_scheduler, monitor_website_complete
 from reports_export import generate_monitoring_report
 from slowapi import Limiter, _rate_limit_exceeded_handler

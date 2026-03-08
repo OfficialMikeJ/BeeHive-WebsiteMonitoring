@@ -293,12 +293,109 @@ const SettingsPage = ({ user }) => {
         <p className="text-muted-foreground">Manage your account settings and security</p>
       </div>
 
-      <Tabs defaultValue="security" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+      <Tabs defaultValue="profile" className="w-full">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="profile" className="space-y-6 mt-6">
+          <Card data-testid="profile-picture-card">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-5 w-5" />
+                Profile Picture
+              </CardTitle>
+              <CardDescription>Upload a profile picture or logo for your account</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col items-center gap-4">
+                {profilePicture ? (
+                  <div className="relative">
+                    <img
+                      src={profilePicture}
+                      alt="Profile"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-primary"
+                      data-testid="profile-picture-preview"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-32 h-32 rounded-full bg-muted flex items-center justify-center border-4 border-border">
+                    <User className="h-16 w-16 text-muted-foreground" />
+                  </div>
+                )}
+
+                <div className="flex gap-2">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/jpg,image/webp"
+                    onChange={handleProfilePictureUpload}
+                    className="hidden"
+                    data-testid="profile-picture-input"
+                  />
+                  <Button
+                    data-testid="upload-profile-picture-button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploadingImage}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    {uploadingImage ? 'Uploading...' : 'Upload Picture'}
+                  </Button>
+                  {profilePicture && (
+                    <Button
+                      data-testid="delete-profile-picture-button"
+                      variant="destructive"
+                      onClick={handleDeleteProfilePicture}
+                      disabled={uploadingImage}
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Delete
+                    </Button>
+                  )}
+                </div>
+
+                <div className="text-sm text-muted-foreground text-center">
+                  <p>Accepted formats: JPEG, PNG, WebP</p>
+                  <p>Maximum size: 2MB</p>
+                  <p>Recommended: 200x200 pixels</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Account Info */}
+          <Card data-testid="account-info-card">
+            <CardHeader>
+              <CardTitle>Account Information</CardTitle>
+              <CardDescription>Your account details</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-muted-foreground">Username</Label>
+                  <p className="font-medium mt-1">{user?.username}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Email</Label>
+                  <p className="font-medium mt-1">{user?.email}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Role</Label>
+                  <p className="font-medium mt-1 capitalize">{user?.role}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">2FA Status</Label>
+                  <p className={`font-medium mt-1 ${user?.twofa_enabled ? 'text-green-500' : ''}`}>
+                    {user?.twofa_enabled ? 'Enabled' : 'Disabled'}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="security" className="space-y-6 mt-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

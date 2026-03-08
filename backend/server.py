@@ -310,7 +310,8 @@ async def login(request: Request, user_data: UserLogin):
         "username": user["username"],
         "email": user["email"],
         "role": user["role"],
-        "twofa_enabled": user.get("twofa_enabled", False)
+        "twofa_enabled": user.get("twofa_enabled", False),
+        "profile_picture": user.get("profile_picture")
     }
     
     return TokenResponse(
